@@ -32,12 +32,19 @@ cp .env.example .env
 php artisan key:generate
 
 Configure o banco de dados no arquivo .env:
+
 DB_CONNECTION=mysql
+
 DB_HOST=127.0.0.1
+
 DB_PORT=3306
+
 DB_DATABASE=palm_island
+
 DB_USERNAME=root
+
 DB_PASSWORD=secret
+
 
 Depois, execute:
 # Rodar migrations e seeders
