@@ -1,0 +1,92 @@
+Cartas:
+- cartas do jogo (17 sendo uma de turno)
+- façanhas (9 cartas)
+
+Estrutura carta do jogo:
+nome da carta
+4 sessões
+sessão
+├─ actions da sessão
+│  ├─ custos da ação
+│  ├─ recurso oferecido na sessão
+│  └─ ação (armazenar, girar ou virar)
+├─ melhoria da sessão
+└─ pontuação da sessão
+
+Estrutura carta de façanhas:
+sessões 2 ou +
+sessão 1
+├─ nome da carta
+├─ custo da ativação da façanhas
+sessão 2 ou +
+├─ nome da carta
+├─ actions da sessão
+│  ├─ custos da ação
+│  └─ ação (flippar, girar ou comprar)
+└─ campo de recurso
+
+Ações:
+├─ armazenar: armazena os recursos da sessão, a carta sera cirada em 90º graus e jogada para a ultima posição do deck
+├─ girar: gira a carta em 180º graus ou muda de sessão de 1 para 2 ou 3 para 4 ou vice versa, a carta tera a sessão mudada e depois jogada para a ultima posição do deck
+├─ virar: vira a carta ou muda de sessão 1 para 3 ou 2 para 4 ou vice versa, a carta tera a sessão mudada e depois jogada para a ultima posição do deck
+└─ descartar: obrigatoriamente a primera carta sera jogada para a ultima posição do deck
+
+Jogo:
+├─ lista de cartas
+│  ├─ id da carta
+│  ├─ sessão ativa
+│  └─ recurso disponivel (true or false)
+├─ pontuação total
+├─ façanhas ativa (tru or false)
+└─ seed
+
+obs: seed do jogo é sorteada para ser inserida no embaralhamento das cartas, para quando for multiplayer poder ser usado o mesmo embralhamento nos 2 jogos
+
+Opções da aplicação:
+├─ criação de usuario
+├─ jogar solo (seed aleatoria) escolhendo com façanhas ou não
+└─ jogar multiplayer (seed definida pelo usuario, 5 caracteres)
+
+etapas do jogo solo:
+criar config do jogo
+├─ usuario
+├─ seed sorteada
+├─ copia das cartas de jogo
+│  ├─ id da carta
+│  ├─ sessão ativa
+│  └─ recurso disponivel (true or false)
+├─ pontuação total
+├─ melhoria total
+├─ façanhas ativa (true or false)
+│   se façanhas true:
+│  └─ verificar quais façanhas o usuario ja conquistou e adiciona-la ao deck
+└─ embaralhar as cartas e botar na ultima posição a carta do round
+
+etapas do jogo multiplayer:
+criar config do jogo
+├─ usuario
+├─ seed definida pelo usuario
+├─ copia das cartas de jogo
+│  ├─ id da carta
+│  ├─ sessão ativa
+│  └─ recurso disponivel (true or false)
+├─ pontuação total
+├─ melhoria total
+└─ embaralhar as cartas e botar na ultima posição a carta do round
+
+como o jogo ira correr:
+1º mostrar ao usuario o hud inicial com:
+├─ seed do jogo
+├─ pontuação total
+├─ melhoria total
+├─ recursos disponiveis (a soma de todos recursos das cartas que estão com recurso disponivel, ou seja, as cartas que foram compradas)
+└─ deck com a primeira e a segunda carta sendo mostrada somente
+2º esperar uma ação do jogador que são:
+├─ armazenar
+├─ girar
+├─ virar
+└─ descartar
+(repetir o passo 2 até a carta de turno ser a primeira)
+3º apos a carta de turno chegar na primeira posição, ela ira mudar a sessão e ser jogada para a ultima posição do deck o turno do jogo ira mudar começando um novo turno
+(repetir até que o fim do 8 truno chegue)
+4º apos o oitavo turno acabar ira ser gravado a pontuação do jogador, conferir as façanhas que atingiu e finalizar o jogo
