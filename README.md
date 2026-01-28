@@ -31,8 +31,7 @@ cp .env.example .env
 # Gere a chave da aplicação
 php artisan key:generate
 
-Configure o banco de dados no arquivo .env:
-
+# Configure o banco de dados no arquivo .env:
 DB_CONNECTION=mysql
 
 DB_HOST=127.0.0.1
