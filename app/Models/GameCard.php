@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 final class GameCard extends Model
 {
+    protected $connection = 'game_db';
     protected $table = 'tb_game_cards';
     public $timestamps = false;
 

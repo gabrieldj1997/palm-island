@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 final class Section extends Model
 {
+    protected $connection = 'game_db';
     protected $table = 'tb_sections';
     public $timestamps = false;
 

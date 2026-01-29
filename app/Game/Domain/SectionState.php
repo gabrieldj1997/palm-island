@@ -2,10 +2,10 @@
 
 namespace App\Game\Domain;
 
-final class Section
+final class SectionState
 {
     /**
-     * @param SectionAction[] $actions
+     * @param SectionActionState[] $actions
      */
     public function __construct(
         public readonly int $id,
@@ -30,7 +30,7 @@ final class Section
             'fish_resource' => $this->fish_resource,
             'stone_resource' => $this->stone_resource,
             'actions' => array_map(
-                fn(SectionAction $action) => [
+                fn(SectionActionState $action) => [
                     'id' => $action->id,
                     'type' => $action->type,
                     'wood_cost' => $action->wood_cost,

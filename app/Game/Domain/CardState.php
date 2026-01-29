@@ -2,6 +2,9 @@
 
 namespace App\Game\Domain;
 
+use App\Game\Domain\Exceptions\UnknownActionException;
+use App\Models\SectionAction;
+
 final class CardState
 {
     public function __construct(
@@ -10,7 +13,7 @@ final class CardState
         public readonly int $section_active,
         public readonly bool $resource_available,
         public readonly Card $card,
-        public readonly Section $section,
+        public readonly SectionState $section,
     ) {}
     public function snapshot(): array
     {
@@ -33,6 +36,18 @@ final class CardState
             section: $this->section
         );
     }
+    public function rotateCard(): self{
+        if (in_array($this->position, [1,3], true)){
+            return $this->withPosition($this->position + 1);
+        }
+        return $this->withPosition($this->position - 1);
+    }
+    public function flipCard(): self{
+        if (in_array($this->position, [1,2], true)){
+            return $this->withPosition($this->position + 2);
+        }
+        return $this->withPosition($this->position - 2);
+    }
     public function withResourceAvailable(bool $resource_available): self
     {
         return new self(
@@ -48,20 +63,17 @@ final class CardState
     {
         return $this->card->isEndTurn();
     }
-    public function validatePurchase(Resource $resourceAvailable): bool
+    public function validateBuyAction(Resource $resourceAvailable, int $type_action): bool
     {
-        return collect($this->section->actions)->where('type', SectionAction::TYPE_PURCHASE)
-            ->first()->compareResourceCost($resourceAvailable);
-    }
-    public function validateRotate(Resource $resourceAvailable): bool
-    {
-        return collect($this->section->actions)->where('type', SectionAction::TYPE_ROTATE)
-            ->first()->compareResourceCost($resourceAvailable);
-    }
-    public function validateFlip(Resource $resourceAvailable): bool
-    {
-        return collect($this->section->actions)->where('type', SectionAction::TYPE_FLIP)
-            ->first()->compareResourceCost($resourceAvailable);
+        return match($type_action) {
+            SectionActionState::TYPE_PURCHASE => collect($this->section->actions)->where('type', SectionActionState::TYPE_PURCHASE)
+            ->first()->compareResourceCost($resourceAvailable),
+            SectionActionState::TYPE_ROTATE => collect($this->section->actions)->where('type', SectionActionState::TYPE_ROTATE)
+            ->first()->compareResourceCost($resourceAvailable),
+            SectionActionState::TYPE_FLIP => collect($this->section->actions)->where('type', SectionActionState::TYPE_FLIP)
+            ->first()->compareResourceCost($resourceAvailable),
+            default => throw new UnknownActionException,
+        };
     }
 
 }

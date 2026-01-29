@@ -4,7 +4,15 @@ namespace App\Game\Domain;
 
 use App\Game\Actions\DiscardCardAction;
 use App\Game\Actions\PurchaseCardAction;
-use Illuminate\Support\Facades\Log;
+use App\Game\Actions\RotateCardAction;
+use App\Game\Actions\FlipCardAction;
+use App\Game\Actions\NextTurnAction;
+use App\Game\Domain\Exceptions\CannotPurchaseException;
+use App\Game\Domain\Exceptions\EndTurnCardException;
+use App\Game\Domain\Exceptions\EndTurnNescessary;
+use App\Game\Domain\Exceptions\EndTurnNescessaryException;
+use App\Game\Domain\Exceptions\FirstOrSecondCardException;
+use App\Game\Domain\Exceptions\NotEnoughResourceException;
 
 final class GameState
 {
@@ -49,19 +57,24 @@ final class GameState
         return match ($action::class) {
             DiscardCardAction::class => $action->execute($this),
             PurchaseCardAction::class => $action->execute($this),
+            RotateCardAction::class => $action->execute($this),
+            FlipCardAction::class => $action->execute($this),
+            NextTurnAction::class => $action->execute($this),
             default => throw new \DomainException('Unsupported action'),
         };
     }
+    public function coreValidation($action_card): void {
+        if ($this->deck->firstCard()->isEndTurn()){
+            throw new EndTurnNescessaryException;
+        }
+        if (!$this->deck->isFirstOrSecondCard($action_card)) {
+            throw new FirstOrSecondCardException;
+        }
+    }
     public function discardFirstCard(): self
     {
-        $newState = $this;
-
-        if ($this->deck->firstCard()->isEndTurn()) {
-            $newState = $newState->incrementTurn();
-        }
-
-        return $newState->withDeck(
-            $newState->deck->discardFirstCard()
+        return $this->withDeck(
+            $this->deck->discardFirstCard()
         );
     }
     private function incrementTurn(): self
@@ -75,30 +88,67 @@ final class GameState
             deck: $this->deck
         );
     }
-    public function purchaseCard(int $purchase_card, array $spent_cards): self
+    public function purchaseCard(int $action_card, array $spent_cards): self
     {
-        if (!$this->deck->isFirstOrSecondCard($purchase_card)) {
-            throw new \DomainException('You can only purchase the first or second card in the deck');
-        }
+        $this->coreValidation($action_card);
+
         if (!$this->deck->canPurchase()) {
-            throw new \DomainException('Cannot purchase more cards, deck is full');
+            throw new CannotPurchaseException;
         }
 
         $new_card = collect($this->deck->cards())
-            ->first(fn(CardState $card) => $card->card_id === $purchase_card);
+            ->first(fn(CardState $card) => $card->card_id === $action_card);
 
-        if ($new_card->resource_available) {
-            throw new \DomainException('This card has already been purchased');
-        }
 
         $resourceAvaible = $this->deck->totalResourceForCards($spent_cards);
         
-        if (!$new_card->validatePurchase($resourceAvaible)) {
-            throw new \DomainException('Not enough resources to purchase this card');
+        if (!$new_card->validateBuyAction($resourceAvaible, SectionActionState::TYPE_PURCHASE)) {
+            throw new NotEnoughResourceException;
         }
 
         $new_card = $new_card->withResourceAvailable(true);
 
-        return $this->withDeck($this->deck->changeCard($new_card, $spent_cards));
+        return $this->withDeck($this->deck->changeAndDiscardCard($new_card, $spent_cards));
+    }
+    public function rotateCard(int $action_card, array $spent_cards): self
+    {
+        $this->coreValidation($action_card);
+
+        $new_card = collect($this->deck->cards())
+            ->first(fn(CardState $card) => $card->card_id === $action_card);
+
+        $resourceAvaible = $this->deck->totalResourceForCards($spent_cards);
+        
+        if (!$new_card->validateBuyAction($resourceAvaible, SectionActionState::TYPE_ROTATE)) {
+            throw new NotEnoughResourceException;
+        }
+
+        $new_card = $new_card->rotateCard();
+
+        return $this->withDeck($this->deck->changeAndDiscardCard($new_card, $spent_cards));
+    }
+    public function flipCard(int $action_card, array $spent_cards): self
+    {
+        $this->coreValidation($action_card);
+
+        $new_card = collect($this->deck->cards())
+            ->first(fn(CardState $card) => $card->card_id === $action_card);
+
+        $resourceAvaible = $this->deck->totalResourceForCards($spent_cards);
+        
+        if (!$new_card->validateBuyAction($resourceAvaible, SectionActionState::TYPE_ROTATE)) {
+            throw new NotEnoughResourceException;
+        }
+
+        $new_card = $new_card->flipCard();
+
+        return $this->withDeck($this->deck->changeAndDiscardCard($new_card, $spent_cards));
+    }
+    public function nextTurn(): self{
+        if (!$this->deck->firstCard()->isEndTurn()){
+            throw new EndTurnCardException;
+        }
+
+        return ($this->discardFirstCard())->incrementTurn();
     }
 }

@@ -6,7 +6,6 @@ use App\Game\Actions\DiscardCardAction;
 use App\Game\Loaders\GameStateLoader;
 use App\Game\Persistence\GameStatePersister;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 final class DiscardCard
 {
@@ -24,8 +23,6 @@ final class DiscardCard
             $state = $state->apply(new DiscardCardAction());
 
             $this->persister->save($state);
-            
-            Log::info("Jogador id: {$state->user_id} descartou uma carta no jogo id: {$game_id}");
         });
     }
 }

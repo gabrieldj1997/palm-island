@@ -5,12 +5,14 @@ namespace App\Game\UseCases;
 use App\Models\Game;
 use App\Models\Card;
 use App\Models\GameCard;
+use DomainException;
 use Illuminate\Support\Facades\DB;
 
 final class CreateGame
 {
     public function execute(int $userId, ?int $seed = null): int
     {
+        try{
         return DB::transaction(function () use ($userId, $seed) {
 
             $cards = Card::with('sections.actions')->get();
@@ -59,5 +61,8 @@ final class CreateGame
 
             return $game->id;
         });
+        }Catch(DomainException $e){
+            return $e->getCode();
+        }
     }
 }

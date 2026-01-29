@@ -32,9 +32,6 @@ final class Deck
     }
     public function firstCard(): CardState
     {
-        if ($this->isEmpty()) {
-            throw new \DomainException('Deck is empty');
-        }
         return $this->cards[0];
     }
     public function secondCard(): CardState
@@ -47,10 +44,6 @@ final class Deck
     }
     public function discardFirstCard(): self
     {
-        if ($this->isEmpty()) {
-            throw new \DomainException('Deck is empty');
-        }
-
         $discardedCard = array_shift($this->cards);
         $this->cards[] = $discardedCard;
 
@@ -101,7 +94,7 @@ final class Deck
         return collect($this->cards)
             ->sum(fn(CardState $card) => $card->section->stars);
     }
-    public function changeCard(CardState $newCard, array $spent_cards): self
+    public function changeAndDiscardCard(CardState $newCard, array $spent_cards): self
     {
         $this->cards = array_map(
             fn(CardState $card) => $card->card_id === $newCard->card_id ? $newCard : $card,

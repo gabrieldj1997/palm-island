@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 final class Card extends Model
 {
     use HasFactory;
+    protected $connection = 'game_db';
     protected $table = 'tb_cards';
     public $timestamps = false;
     public const NORMAL = 'normal';

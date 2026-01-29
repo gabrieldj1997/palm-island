@@ -2,7 +2,7 @@
 
 namespace App\Game\Domain;
 use Illuminate\Support\Facades\Log;
-final class SectionAction
+final class SectionActionState
 {
     public const TYPE_PURCHASE = 1;
     public const TYPE_ROTATE = 2;

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 final class Game extends Model
 {
+    protected $connection = 'game_db';
     protected $table = 'tb_games';
 
     protected $fillable = [
@@ -23,11 +24,6 @@ final class Game extends Model
         'turn' => 'integer',
         'total_stars' => 'integer',
     ];
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
 
     public function cards(): HasMany
     {
