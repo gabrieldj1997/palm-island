@@ -18,22 +18,22 @@ class CardSeeder extends Seeder
             return;
         }
         $cards = [
-            ['name' => 'canoaria', 'type' => 'normal'],
-            ['name' => 'canoaria', 'type' => 'normal'],
-            ['name' => 'canoaria', 'type' => 'normal'],
-            ['name' => 'madereira', 'type' => 'normal'],
-            ['name' => 'madereira', 'type' => 'normal'],
-            ['name' => 'madereira', 'type' => 'normal'],
-            ['name' => 'pedreira', 'type' => 'normal'],
-            ['name' => 'pedreira', 'type' => 'normal'],
-            ['name' => 'pedreira', 'type' => 'normal'],
-            ['name' => 'mercado', 'type' => 'normal'],
-            ['name' => 'posto comercial', 'type' => 'normal'],
-            ['name' => 'ferramentaria', 'type' => 'normal'],
-            ['name' => 'habitação', 'type' => 'normal'],
-            ['name' => 'habitação', 'type' => 'normal'],
-            ['name' => 'templo', 'type' => 'normal'],
-            ['name' => 'templo', 'type' => 'normal'],
+            ['name' => 'Pescaria', 'type' => 'normal'],
+            ['name' => 'Pescaria', 'type' => 'normal'],
+            ['name' => 'Pescaria', 'type' => 'normal'],
+            ['name' => 'Madereira', 'type' => 'normal'],
+            ['name' => 'Madereira', 'type' => 'normal'],
+            ['name' => 'Madereira', 'type' => 'normal'],
+            ['name' => 'Mina', 'type' => 'normal'],
+            ['name' => 'Mina', 'type' => 'normal'],
+            ['name' => 'Mina', 'type' => 'normal'],
+            ['name' => 'Mercado', 'type' => 'normal'],
+            ['name' => 'Feira', 'type' => 'normal'],
+            ['name' => 'Comercio', 'type' => 'normal'],
+            ['name' => 'Vila', 'type' => 'normal'],
+            ['name' => 'Vila', 'type' => 'normal'],
+            ['name' => 'Igreja', 'type' => 'normal'],
+            ['name' => 'Igreja', 'type' => 'normal'],
         ];
         Card::insert($cards);
     }
@@ -43,7 +43,7 @@ class CardSeeder extends Seeder
             return;
         }
         Card::create([
-            'name' => 'turno',
+            'name' => 'Turno',
             'type' => 'end_turn',
         ]);
     }

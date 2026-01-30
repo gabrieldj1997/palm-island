@@ -22,10 +22,10 @@ class SectionSeeder extends Seeder
             ['card_id' => 1, 'section_number' => 3, 'stars' => 0, 'improvements' => 1, 'wood_resource' => 1, 'fish_resource' => 1, 'stone_resource' => 0],
             ['card_id' => 1, 'section_number' => 4, 'stars' => 0, 'improvements' => 2, 'wood_resource' => 1, 'fish_resource' => 2, 'stone_resource' => 0],
 
+            ['card_id' => 2, 'section_number' => 1, 'stars' => 0, 'improvements' => 0, 'wood_resource' => 0, 'fish_resource' => 1, 'stone_resource' => 0],
             ['card_id' => 2, 'section_number' => 2, 'stars' => 0, 'improvements' => 1, 'wood_resource' => 0, 'fish_resource' => 2, 'stone_resource' => 0],
             ['card_id' => 2, 'section_number' => 3, 'stars' => 0, 'improvements' => 1, 'wood_resource' => 1, 'fish_resource' => 1, 'stone_resource' => 0],
             ['card_id' => 2, 'section_number' => 4, 'stars' => 0, 'improvements' => 2, 'wood_resource' => 1, 'fish_resource' => 2, 'stone_resource' => 0],
-            ['card_id' => 2, 'section_number' => 1, 'stars' => 0, 'improvements' => 0, 'wood_resource' => 0, 'fish_resource' => 1, 'stone_resource' => 0],
 
             ['card_id' => 3, 'section_number' => 1, 'stars' => 0, 'improvements' => 0, 'wood_resource' => 0, 'fish_resource' => 1, 'stone_resource' => 0],
             ['card_id' => 3, 'section_number' => 2, 'stars' => 0, 'improvements' => 1, 'wood_resource' => 0, 'fish_resource' => 2, 'stone_resource' => 0],
@@ -70,7 +70,7 @@ class SectionSeeder extends Seeder
             ['card_id' => 11, 'section_number' => 1, 'stars' => 0, 'improvements' => 0, 'wood_resource' => 1, 'fish_resource' => 1, 'stone_resource' => 0],
             ['card_id' => 11, 'section_number' => 2, 'stars' => 0, 'improvements' => 1, 'wood_resource' => 3, 'fish_resource' => 0, 'stone_resource' => 0],
             ['card_id' => 11, 'section_number' => 3, 'stars' => 0, 'improvements' => 1, 'wood_resource' => 0, 'fish_resource' => 3, 'stone_resource' => 0],
-            ['card_id' => 11, 'section_number' => 4, 'stars' => 0, 'improvements' => 2, 'wood_resource' => 1, 'fish_resource' => 0, 'stone_resource' => 3],
+            ['card_id' => 11, 'section_number' => 4, 'stars' => 0, 'improvements' => 2, 'wood_resource' => 0, 'fish_resource' => 0, 'stone_resource' => 3],
 
             ['card_id' => 12, 'section_number' => 1, 'stars' => 0, 'improvements' => 0, 'wood_resource' => 0, 'fish_resource' => 0, 'stone_resource' => 0],
             ['card_id' => 12, 'section_number' => 2, 'stars' => 4, 'improvements' => 3, 'wood_resource' => 0, 'fish_resource' => 0, 'stone_resource' => 0],
@@ -99,6 +99,9 @@ class SectionSeeder extends Seeder
             ['card_id' => 16, 'section_number' => 4, 'stars' => 6, 'improvements' => 2, 'wood_resource' => 0, 'fish_resource' => 0, 'stone_resource' => 0],
 
             ['card_id' => 17, 'section_number' => 1, 'stars' => 0, 'improvements' => 0, 'wood_resource' => 0, 'fish_resource' => 0, 'stone_resource' => 0],
+            ['card_id' => 17, 'section_number' => 2, 'stars' => 0, 'improvements' => 0, 'wood_resource' => 0, 'fish_resource' => 0, 'stone_resource' => 0],
+            ['card_id' => 17, 'section_number' => 3, 'stars' => 0, 'improvements' => 0, 'wood_resource' => 0, 'fish_resource' => 0, 'stone_resource' => 0],
+            ['card_id' => 17, 'section_number' => 4, 'stars' => 0, 'improvements' => 0, 'wood_resource' => 0, 'fish_resource' => 0, 'stone_resource' => 0],
         ];
         Section::insert($sections);
     }

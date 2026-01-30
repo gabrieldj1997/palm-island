@@ -133,7 +133,7 @@ class SectionActionSeeder extends Seeder
             ['section_id' => 42, 'type' => 1, 'wood_cost' => 0, 'fish_cost' => 2, 'stone_cost' => 2],
             ['section_id' => 42, 'type' => 3, 'wood_cost' => 1, 'fish_cost' => 1, 'stone_cost' => 0],
 
-            ['section_id' => 43, 'type' => 1, 'wood_cost' => 2, 'fish_cost' => 1, 'stone_cost' => 2],
+            ['section_id' => 43, 'type' => 1, 'wood_cost' => 2, 'fish_cost' => 0, 'stone_cost' => 2],
             ['section_id' => 43, 'type' => 2, 'wood_cost' => 1, 'fish_cost' => 1, 'stone_cost' => 0],
 
             ['section_id' => 44, 'type' => 1, 'wood_cost' => 2, 'fish_cost' => 2, 'stone_cost' => 0],
