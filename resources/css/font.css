@@ -1,0 +1,15 @@
+@font-face {
+    font-family: 'agentOrange';
+    src: url('../fonts/AGENTORANGE.TTF') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+.font-agentOrange {
+    font-family: 'agentOrange', sans-serif;
+    color: black;
+    text-shadow: 
+        2px 2px 0px #ffffff, 
+       -2px -2px 0px #ffffff, 
+        2px -2px 0px #ffffff, 
+       -2px 2px 0px #ffffff;
+}

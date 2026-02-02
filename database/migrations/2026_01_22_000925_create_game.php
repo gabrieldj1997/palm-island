@@ -53,6 +53,13 @@ return new class extends Migration
             $table->boolean('resource_available')->default(false);
             $table->index(['game_id', 'card_id']);
         });
+        Schema::connection('game_db')->create('tb_user_details', function (Blueprint $table) {
+            $table->integer('user_id');
+            $table->integer('games_played');
+            $table->integer('feats_achieved');
+            $table->integer('open_game');
+            $table->integer('challenges'); //tabela a ser criada para registrar a pontuação no multiplayer
+        });
     }
 
     /**

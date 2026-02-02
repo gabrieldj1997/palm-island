@@ -1,23 +1,17 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { ref, computed, provide } from 'vue'
 import CardFace from './CardFace.vue'
-import { getIcon, getGifIcon } from '@/utils'
 
-const props = defineProps({
-  card: {
-    type: Object,
-    required: true,
-  }
-})
+const props = defineProps({ card: { type: Object, required: true } })
 
 const isFlipped = ref(false)
 const isRotated = ref(false)
+const flipping = ref(false)
+const rotating = ref(false)
 
 const sections = computed(() => {
   const map = {}
-  props.card.sections.forEach(section => {
-    map[section.section_number] = section
-  })
+  props.card.sections.forEach(s => map[s.section_number] = s)
   return map
 })
 
@@ -28,40 +22,39 @@ const currentUpper = computed(() => {
   return isRotated.value ? sections.value[4] : sections.value[3]
 })
 
-const currentLower = computed(() => {
-  if (!isFlipped.value) {
-    return isRotated.value ? sections.value[1] : sections.value[2]
-  }
-  return isRotated.value ? sections.value[3] : sections.value[4]
+const triggerAction = (type) => {
+  if (flipping.value || rotating.value) return
+
+  if (type === 'flip') flipping.value = true
+  if (type === 'rotate') rotating.value = true
+
+  setTimeout(() => {
+    if (type === 'flip') isFlipped.value = !isFlipped.value
+    if (type === 'rotate') isRotated.value = !isRotated.value
+  }, 600)
+
+  setTimeout(() => {
+    flipping.value = false
+    rotating.value = false
+  }, 600)
+}
+
+provide('cardActions', {
+  toggleFlip: () => triggerAction('flip'),
+  toggleRotate: () => triggerAction('rotate')
 })
 </script>
 
 <template>
-  <div class="relative flex items-center gap-2">
-    <div class="flex flex-col gap-4">
-      <button class="group relative w-10 h-10 bg-gray-100 rounded-md overflow-hidden border-2 border-black rounded-lg border-solid gap-4"
-        @click="isRotated = !isRotated">
-        <img :src="getGifIcon('rotate')"
-          class="absolute w-full h-full object-contain opacity-0 group-hover:opacity-100 transition-opacity duration-200 transform scale-125" />
+  <div class="relative flex items-center gap-4 perspective">
+    <slot name="controls" :toggle-flip="() => triggerAction('flip')" :toggle-rotate="() => triggerAction('rotate')"></slot>
 
-        <img :src="getIcon('rotate')"
-          class="relative z-10 w-full h-full object-contain group-hover:opacity-0 transition-opacity duration-200" />
-      </button>
-
-      <button class="group relative w-10 h-10 flex items-center justify-center bg-gray-100 rounded-md overflow-hidden border-2 border-black rounded-lg border-solid"
-        @click="isFlipped = !isFlipped">
-        <img :src="getGifIcon('flip')"
-          class="absolute w-full h-full object-contain opacity-0 group-hover:opacity-100 transition-opacity duration-200 transform scale-125" />
-
-        <img :src="getIcon('flip')"
-          class="relative z-10 w-full h-full object-contain group-hover:opacity-0 transition-opacity duration-200" />
-      </button>
+    <div class="w-64 h-96 card-inner relative border-4 border-gray-300 rounded-lg overflow-hidden bg-white shadow-md"
+      :class="{
+        'is-flipping': flipping,
+        'is-rotating': rotating
+      }">
+      <CardFace :upper-section="currentUpper" :card-name="card.name" />
     </div>
-    <div
-      class="w-64 h-96 border rounded-lg bg-white shadow-md overflow-hidden border-4 border-gray-300 rounded-lg border-solid">
-      <CardFace :upper-section="currentUpper" :lower-section="currentLower" :card-name="card.name" />
-    </div>
-
-
   </div>
 </template>

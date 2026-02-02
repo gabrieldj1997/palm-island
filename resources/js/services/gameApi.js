@@ -1,9 +1,22 @@
-export async function startGame() {
-  const res = await fetch('/api/games', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' }
-  })
-  return handle(res)
+async function handle(res) {
+    if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        return data
+    }
+    return res.json();
+}
+
+export async function createGameApi() {
+    const res = await fetch('/api/games/create', {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest' 
+        },
+        credentials: 'include'
+    })
+    return handle(res)
 }
 
 export async function sendAction(gameId, payload) {
@@ -13,10 +26,4 @@ export async function sendAction(gameId, payload) {
     body: JSON.stringify(payload)
   })
   return handle(res)
-}
-
-async function handle(res) {
-  const data = await res.json()
-  if (!res.ok) throw new Error(data.error || 'Erro inesperado')
-  return data
 }

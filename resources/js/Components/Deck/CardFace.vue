@@ -6,10 +6,6 @@ defineProps({
     type: Object,
     required: true
   },
-  lowerSection: {
-    type: Object,
-    required: true
-  },
   cardName: {
     type: String,
     required: true
